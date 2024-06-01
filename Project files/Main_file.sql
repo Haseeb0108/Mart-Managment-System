@@ -1,5 +1,17 @@
 Create database Mart_Management_System;
 use Mart_Management_System;
+CREATE TABLE Categories (
+    CategoryID INT PRIMARY KEY,
+    CategoryName VARCHAR(255)
+);
+
+-- Insert data into Categories table
+INSERT INTO Categories (CategoryID, CategoryName)
+VALUES
+(1, 'Electronics'),
+(2, 'Books'),
+(3, 'Clothing'),
+(4, 'Home Appliances');
 
 CREATE TABLE Products (
     ProductID INT PRIMARY KEY,
@@ -22,19 +34,6 @@ VALUES
 (7, 'Microwave', 89.99, 40, 4),
 (8, 'Refrigerator', 499.99, 20, 4);    
     
-CREATE TABLE Categories (
-    CategoryID INT PRIMARY KEY,
-    CategoryName VARCHAR(255)
-);
-
--- Insert data into Categories table
-INSERT INTO Categories (CategoryID, CategoryName)
-VALUES
-(1, 'Electronics'),
-(2, 'Books'),
-(3, 'Clothing'),
-(4, 'Home Appliances');
-
 CREATE TABLE Customers (
     CustomerID INT PRIMARY KEY,
     FirstName VARCHAR(50),
@@ -81,6 +80,21 @@ VALUES
 (1, 'Alice', 'Johnson', 'Manager', '2020-01-15', 60000.00),
 (2, 'Bob', 'Lee', 'Sales Associate', '2019-03-10', 40000.00),
 (3, 'Charlie', 'Kim', 'Clerk', '2021-06-01', 35000.00);
+CREATE TABLE Orders (
+    OrderID INT PRIMARY KEY,
+    CustomerID INT,
+    OrderDate DATE,
+    TotalAmount DECIMAL(10, 2),
+    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
+);
+
+-- Insert data into Orders table
+INSERT INTO Orders (OrderID, CustomerID, OrderDate, TotalAmount)
+VALUES
+(1, 1, '2024-05-01', 719.98),
+(2, 2, '2024-05-02', 1049.98),
+(3, 3, '2024-05-03', 54.98);
+
 
 CREATE TABLE OrderDetails (
     OrderDetailID INT PRIMARY KEY,
@@ -101,20 +115,21 @@ VALUES
 (5, 3, 4, 1, 29.99),
 (6, 3, 6, 1, 39.99);
 
-CREATE TABLE Orders (
-    OrderID INT PRIMARY KEY,
-    CustomerID INT,
-    OrderDate DATE,
-    TotalAmount DECIMAL(10, 2),
-    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
+CREATE TABLE Suppliers (
+    SupplierID INT PRIMARY KEY,
+    SupplierName VARCHAR(255),
+    ContactName VARCHAR(255),
+    Phone VARCHAR(20),
+    Product INT,
+    FOREIGN KEY (Product) references Products (ProductID)
 );
 
--- Insert data into Orders table
-INSERT INTO Orders (OrderID, CustomerID, OrderDate, TotalAmount)
+-- Insert data into Suppliers table
+INSERT INTO Suppliers (SupplierID, SupplierName, ContactName, Phone, Product)
 VALUES
-(1, 1, '2024-05-01', 719.98),
-(2, 2, '2024-05-02', 1049.98),
-(3, 3, '2024-05-03', 54.98);
+(1, 'Tech Supplier Inc.', 'James Bond', '555-1234', 1),
+(2, 'Book Supplier Ltd.', 'Hermione Granger', '555-5678', 3),
+(3, 'Clothing Supplier Co.', 'Bruce Wayne', '555-8765', 5);
 
 CREATE TABLE Payments (
     PaymentID INT PRIMARY KEY,
@@ -151,21 +166,6 @@ VALUES
 (2, 2, '2024-05-03', 2, 'QuickDelivery', 'TRACK67890'),
 (3, 3, '2024-05-04', 2, 'ExpressShip', 'TRACK11223');
 
-CREATE TABLE Suppliers (
-    SupplierID INT PRIMARY KEY,
-    SupplierName VARCHAR(255),
-    ContactName VARCHAR(255),
-    Phone VARCHAR(20),
-    Product INT,
-    FOREIGN KEY (Product) references Products (ProductID)
-);
-
--- Insert data into Suppliers table
-INSERT INTO Suppliers (SupplierID, SupplierName, ContactName, Phone, Product)
-VALUES
-(1, 'Tech Supplier Inc.', 'James Bond', '555-1234', 1),
-(2, 'Book Supplier Ltd.', 'Hermione Granger', '555-5678', 3),
-(3, 'Clothing Supplier Co.', 'Bruce Wayne', '555-8765', 5);
 
 -- Muhammad, BSE-23F-098
 SELECT * FROM Products WHERE Price > 50;
@@ -304,8 +304,4 @@ FROM Employees;
 SELECT * FROM Suppliers
 WHERE Product IN (SELECT ProductID FROM Products WHERE Price > 100);
 
-
-
-
-
-
+-- drop database Mart_Management_System;
